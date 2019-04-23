@@ -1,0 +1,436 @@
+#CSIS 1550 SP7 CHAPTER 4 HENRY BOOKS SINGLE TABLE QUERIES
+#MICHAEL SWENSON 4/9/2017
+
+mysql> #1
+mysql> SELECT BOOK_CODE, TITLE FROM BOOK;
++-----------+------------------------------------------+
+| BOOK_CODE | TITLE                                    |
++-----------+------------------------------------------+
+| 0180      | A Deepness in the Sky                    |
+| 0189      | Magic Terror                             |
+| 0200      | The Stranger                             |
+| 0378      | Venice                                   |
+| 079X      | Second Wind                              |
+| 0808      | The Edge                                 |
+| 1351      | Dreamcatcher: A Novel                    |
+| 1382      | Treasure Chests                          |
+| 138X      | Beloved                                  |
+| 2226      | Harry Potter and the Prisoner of Azkaban |
+| 2281      | Van Gogh and Gauguin                     |
+| 2766      | Of Mice and Men                          |
+| 2908      | Electric Light                           |
+| 3350      | Group: Six People in Search of a Life    |
+| 3743      | Nine Stories                             |
+| 3906      | The Soul of a New Machine                |
+| 5163      | Travels with Charley                     |
+| 5790      | Catch-22                                 |
+| 6128      | Jazz                                     |
+| 6328      | Band of Brothers                         |
+| 669X      | A Guide to SQL                           |
+| 6908      | Franny and Zooey                         |
+| 7405      | East of Eden                             |
+| 7443      | Harry Potter and the Goblet of Fire      |
+| 7559      | The Fall                                 |
+| 8092      | Godel, Escher, Bach                      |
+| 8720      | When Rabbit Howls                        |
+| 9611      | Black House                              |
+| 9627      | Song of Solomon                          |
+| 9701      | The Grapes of Wrath                      |
+| 9882      | Slay Ride                                |
+| 9883      | The Catcher in the Rye                   |
+| 9931      | To Kill a Mockingbird                    |
++-----------+------------------------------------------+
+33 rows in set (0.00 sec)
+
+mysql> #2
+mysql> SELECT * FROM PUBLISHER;
++----------------+--------------------------+--------------+
+| PUBLISHER_CODE | PUBLISHER_NAME           | CITY         |
++----------------+--------------------------+--------------+
+| AH             | Arkham House             | Sauk City WI |
+| AP             | Arcade Publishing        | New York     |
+| BA             | Basic Books              | Boulder CO   |
+| BP             | Berkley Publishing       | Boston       |
+| BY             | Back Bay Books           | New York     |
+| CT             | Course Technology        | Boston       |
+| FA             | Fawcett Books            | New York     |
+| FS             | Farrar Straus and Giroux | New York     |
+| HC             | HarperCollins Publishers | New York     |
+| JP             | Jove Publications        | New York     |
+| JT             | Jeremy P. Tarcher        | Los Angeles  |
+| LB             | Lb Books                 | New York     |
+| MP             | McPherson and Co.        | Kingston     |
+| PE             | Penguin USA              | New York     |
+| PL             | Plume                    | New York     |
+| PU             | Putnam Publishing Group  | New York     |
+| RH             | Random House             | New York     |
+| SB             | Schoken Books            | New York     |
+| SC             | Scribner                 | New York     |
+| SS             | Simon and Schuster       | New York     |
+| ST             | Scholastic Trade         | New York     |
+| TA             | Taunton Press            | Newtown CT   |
+| TB             | Tor Books                | New York     |
+| TH             | Thames and Hudson        | New York     |
+| TO             | Touchstone Books         | Westport CT  |
+| VB             | Vintage Books            | New York     |
+| WN             | W.W. Norton              | New York     |
+| WP             | Westview Press           | Boulder CO   |
++----------------+--------------------------+--------------+
+28 rows in set (0.00 sec)
+
+mysql> #3
+mysql> SELECT PUBLISHER_NAME FROM PUBLISHER WHERE CITY = 'BOSTON';
++--------------------+
+| PUBLISHER_NAME     |
++--------------------+
+| Berkley Publishing |
+| Course Technology  |
++--------------------+
+2 rows in set (0.00 sec)
+
+mysql> #4
+mysql> SELECT PUBLISHER_NAME FROM PUBLISHER WHERE NOT CITY = 'BOSTON';
++--------------------------+
+| PUBLISHER_NAME           |
++--------------------------+
+| Arkham House             |
+| Arcade Publishing        |
+| Basic Books              |
+| Back Bay Books           |
+| Fawcett Books            |
+| Farrar Straus and Giroux |
+| HarperCollins Publishers |
+| Jove Publications        |
+| Jeremy P. Tarcher        |
+| Lb Books                 |
+| McPherson and Co.        |
+| Penguin USA              |
+| Plume                    |
+| Putnam Publishing Group  |
+| Random House             |
+| Schoken Books            |
+| Scribner                 |
+| Simon and Schuster       |
+| Scholastic Trade         |
+| Taunton Press            |
+| Tor Books                |
+| Thames and Hudson        |
+| Touchstone Books         |
+| Vintage Books            |
+| W.W. Norton              |
+| Westview Press           |
++--------------------------+
+26 rows in set (0.00 sec)
+
+mysql> #5
+mysql> SELECT BRANCH_NAME
+    -> FROM BRANCH
+    -> WHERE NUM_EMPLOYEES >= 9;
++-----------------+
+| BRANCH_NAME     |
++-----------------+
+| Henry Downtown  |
+| Henry Brentwood |
+| Henry Eastshore |
++-----------------+
+3 rows in set (0.00 sec)
+
+mysql> #6
+mysql> SELECT BOOK_CODE, TITLE
+    -> FROM BOOK
+    -> WHERE TYPE = 'SFI';
++-----------+------------------------------------------+
+| BOOK_CODE | TITLE                                    |
++-----------+------------------------------------------+
+| 0180      | A Deepness in the Sky                    |
+| 2226      | Harry Potter and the Prisoner of Azkaban |
+| 7443      | Harry Potter and the Goblet of Fire      |
++-----------+------------------------------------------+
+3 rows in set (0.00 sec)
+
+mysql> #7
+mysql> SELECT BOOK_CODE, TITLE FROM BOOK WHERE TYPE = 'SFI' AND PAPERBACK = 'Y';
++-----------+-----------------------+
+| BOOK_CODE | TITLE                 |
++-----------+-----------------------+
+| 0180      | A Deepness in the Sky |
++-----------+-----------------------+
+1 row in set (0.00 sec)
+
+mysql> #8
+mysql> SELECT BOOK_CODE, TITLE
+    -> FROM BOOK
+    -> WHERE TYPE = 'SFI'
+    -> OR PUBLISHER_CODE = 'SC'
+    -> ;
++-----------+------------------------------------------+
+| BOOK_CODE | TITLE                                    |
++-----------+------------------------------------------+
+| 0180      | A Deepness in the Sky                    |
+| 1351      | Dreamcatcher: A Novel                    |
+| 2226      | Harry Potter and the Prisoner of Azkaban |
+| 5790      | Catch-22                                 |
+| 7443      | Harry Potter and the Goblet of Fire      |
++-----------+------------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> #9
+mysql> SELECT BOOK_CODE, TITLE, PRICE
+    -> FROM BOOK
+    -> WHERE PRICE BETWEEN 20 AND 30;
++-----------+----------------------+-------+
+| BOOK_CODE | TITLE                | PRICE |
++-----------+----------------------+-------+
+| 0378      | Venice               | 24.50 |
+| 079X      | Second Wind          | 24.95 |
+| 1382      | Treasure Chests      | 24.46 |
+| 2281      | Van Gogh and Gauguin | 21.00 |
++-----------+----------------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> #10
+mysql> SELECT BOOK_CODE, TITLE
+    -> FROM BOOK
+    -> WHERE TYPE = 'MYS'
+    -> AND PRICE < 20;
++-----------+-----------+
+| BOOK_CODE | TITLE     |
++-----------+-----------+
+| 0808      | The Edge  |
+| 9882      | Slay Ride |
++-----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> #11
+mysql> SELECT BOOK_CODE, TITLE, (.9 * PRICE) AS DISCOUNTED_PRICE
+    -> FROM BOOK
+    -> ;
++-----------+------------------------------------------+------------------+
+| BOOK_CODE | TITLE                                    | DISCOUNTED_PRICE |
++-----------+------------------------------------------+------------------+
+| 0180      | A Deepness in the Sky                    |            6.471 |
+| 0189      | Magic Terror                             |            7.191 |
+| 0200      | The Stranger                             |            7.200 |
+| 0378      | Venice                                   |           22.050 |
+| 079X      | Second Wind                              |           22.455 |
+| 0808      | The Edge                                 |            6.291 |
+| 1351      | Dreamcatcher: A Novel                    |           17.640 |
+| 1382      | Treasure Chests                          |           22.014 |
+| 138X      | Beloved                                  |           11.655 |
+| 2226      | Harry Potter and the Prisoner of Azkaban |           12.564 |
+| 2281      | Van Gogh and Gauguin                     |           18.900 |
+| 2766      | Of Mice and Men                          |            6.255 |
+| 2908      | Electric Light                           |           12.600 |
+| 3350      | Group: Six People in Search of a Life    |            9.360 |
+| 3743      | Nine Stories                             |            5.391 |
+| 3906      | The Soul of a New Machine                |           10.044 |
+| 5163      | Travels with Charley                     |            7.155 |
+| 5790      | Catch-22                                 |           10.800 |
+| 6128      | Jazz                                     |           11.655 |
+| 6328      | Band of Brothers                         |            8.640 |
+| 669X      | A Guide to SQL                           |           34.155 |
+| 6908      | Franny and Zooey                         |            5.391 |
+| 7405      | East of Eden                             |           11.655 |
+| 7443      | Harry Potter and the Goblet of Fire      |           16.344 |
+| 7559      | The Fall                                 |            7.200 |
+| 8092      | Godel, Escher, Bach                      |           12.600 |
+| 8720      | When Rabbit Howls                        |            5.661 |
+| 9611      | Black House                              |           16.929 |
+| 9627      | Song of Solomon                          |           12.600 |
+| 9701      | The Grapes of Wrath                      |           11.700 |
+| 9882      | Slay Ride                                |            6.291 |
+| 9883      | The Catcher in the Rye                   |            5.391 |
+| 9931      | To Kill a Mockingbird                    |           16.200 |
++-----------+------------------------------------------+------------------+
+33 rows in set (0.00 sec)
+
+
+mysql> #12
+mysql>  SELECT PUBLISHER_NAME
+    -> FROM PUBLISHER 
+    -> WHERE PUBLISHER_NAME LIKE '% and %';
++--------------------------+
+| PUBLISHER_NAME           |
++--------------------------+
+| Farrar Straus and Giroux |
+| McPherson and Co.        |
+| Simon and Schuster       |
+| Thames and Hudson        |
++--------------------------+
+4 rows in set (0.00 sec)
+
+mysql> #13
+mysql> SELECT BOOK_CODE, TITLE
+    -> FROM BOOK
+    -> WHERE TYPE IN ('SFI','MYS','ART');
++-----------+------------------------------------------+
+| BOOK_CODE | TITLE                                    |
++-----------+------------------------------------------+
+| 0180      | A Deepness in the Sky                    |
+| 0378      | Venice                                   |
+| 079X      | Second Wind                              |
+| 0808      | The Edge                                 |
+| 1382      | Treasure Chests                          |
+| 2226      | Harry Potter and the Prisoner of Azkaban |
+| 2281      | Van Gogh and Gauguin                     |
+| 7443      | Harry Potter and the Goblet of Fire      |
+| 9882      | Slay Ride                                |
++-----------+------------------------------------------+
+9 rows in set (0.00 sec)
+
+mysql> #14
+mysql> SELECT BOOK_CODE, TITLE
+    -> FROM BOOK
+    -> WHERE TYPE IN ('SFI','MYS','ART')
+    -> ORDER BY TITLE;
++-----------+------------------------------------------+
+| BOOK_CODE | TITLE                                    |
++-----------+------------------------------------------+
+| 0180      | A Deepness in the Sky                    |
+| 7443      | Harry Potter and the Goblet of Fire      |
+| 2226      | Harry Potter and the Prisoner of Azkaban |
+| 079X      | Second Wind                              |
+| 9882      | Slay Ride                                |
+| 0808      | The Edge                                 |
+| 1382      | Treasure Chests                          |
+| 2281      | Van Gogh and Gauguin                     |
+| 0378      | Venice                                   |
++-----------+------------------------------------------+
+9 rows in set (0.00 sec)
+
+mysql> #15
+mysql> SELECT BOOK_CODE, TITLE, PRICE FROM BOOK WHERE TYPE IN ('SFI','MYS','ART') GROUP BY PRICE ORDER BY PRICE DESC, TITLE;
++-----------+------------------------------------------+-------+
+| BOOK_CODE | TITLE                                    | PRICE |
++-----------+------------------------------------------+-------+
+| 079X      | Second Wind                              | 24.95 |
+| 0378      | Venice                                   | 24.50 |
+| 1382      | Treasure Chests                          | 24.46 |
+| 2281      | Van Gogh and Gauguin                     | 21.00 |
+| 7443      | Harry Potter and the Goblet of Fire      | 18.16 |
+| 2226      | Harry Potter and the Prisoner of Azkaban | 13.96 |
+| 0180      | A Deepness in the Sky                    |  7.19 |
+| 0808      | The Edge                                 |  6.99 |
++-----------+------------------------------------------+-------+
+8 rows in set (0.00 sec)
+
+mysql> #16
+mysql> SELECT DISTINCT TYPE FROM BOOK;
++------+
+| TYPE |
++------+
+| SFI  |
+| HOR  |
+| FIC  |
+| ART  |
+| MYS  |
+| POE  |
+| PSY  |
+| SCI  |
+| TRA  |
+| HIS  |
+| CMP  |
+| PHI  |
++------+
+12 rows in set (0.00 sec)
+
+mysql> #17
+mysql> SELECT COUNT(TYPE) FROM BOOK WHERE TYPE = 'SFI';
++-------------+
+| COUNT(TYPE) |
++-------------+
+|           3 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> #18
+mysql> SELECT TYPE, AVG(PRICE)
+    -> FROM BOOK
+    -> GROUP BY TYPE;
++------+------------+
+| TYPE | AVG(PRICE) |
++------+------------+
+| ART  |  23.320000 |
+| CMP  |  37.950000 |
+| FIC  |  10.520769 |
+| HIS  |   9.600000 |
+| HOR  |  15.466667 |
+| MYS  |  12.976667 |
+| PHI  |  14.000000 |
+| POE  |  14.000000 |
+| PSY  |   8.345000 |
+| SCI  |  11.160000 |
+| SFI  |  13.103333 |
+| TRA  |   7.950000 |
++------+------------+
+12 rows in set (0.01 sec)
+
+mysql> #19
+mysql> SELECT TYPE, AVG(PRICE)
+    -> FROM BOOK
+    -> WHERE PAPERBACK = 'Y'
+    -> GROUP BY TYPE;
++------+------------+
+| TYPE | AVG(PRICE) |
++------+------------+
+| CMP  |  37.950000 |
+| FIC  |   9.897500 |
+| HIS  |   9.600000 |
+| HOR  |   7.990000 |
+| MYS  |   6.990000 |
+| PHI  |  14.000000 |
+| PSY  |   8.345000 |
+| SCI  |  11.160000 |
+| SFI  |   7.190000 |
+| TRA  |   7.950000 |
++------+------------+
+10 rows in set (0.00 sec)
+
+mysql> #20
+mysql> SELECT TYPE, AVG(PRICE)
+    -> FROM BOOK
+    -> WHERE PAPERBACK = 'Y'
+    -> GROUP BY TYPE
+    -> HAVING AVG(PRICE) > 10;
++------+------------+
+| TYPE | AVG(PRICE) |
++------+------------+
+| CMP  |  37.950000 |
+| PHI  |  14.000000 |
+| SCI  |  11.160000 |
++------+------------+
+3 rows in set (0.00 sec)
+
+mysql> #21 
+mysql> SELECT MAX(PRICE) FROM BOOK;
++------------+
+| MAX(PRICE) |
++------------+
+|      37.95 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> #22
+mysql> SELECT TITLE,PRICE
+    -> FROM BOOK
+    -> WHERE PRICE =
+    -> (SELECT MIN(PRICE) FROM BOOK);
++------------------------+-------+
+| TITLE                  | PRICE |
++------------------------+-------+
+| Nine Stories           |  5.99 |
+| Franny and Zooey       |  5.99 |
+| The Catcher in the Rye |  5.99 |
++------------------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> #23
+mysql> SELECT SUM(NUM_EMPLOYEES) FROM BRANCH;
++--------------------+
+| SUM(NUM_EMPLOYEES) |
++--------------------+
+|                 40 |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> NOTEE

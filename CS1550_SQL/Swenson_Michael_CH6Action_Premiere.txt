@@ -1,0 +1,192 @@
+#Michael Swenson CSIS1550-sp17
+#Chapter 6 Action Queries Premiere
+
+mysql> USE PREMIERE;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> #1
+mysql> CREATE TABLE NONAPPLIANCE (PART_NUM CHAR(4) PRIMARY KEY NOT NULL, DESCRIPTION CHAR(15), ON_HAND DECIMAL(4,0), CLASS CHAR(2), PRICE DECIMAL(6,2));
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> SHOW COLUMNS FROM NONAPPLIANCE;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| PART_NUM    | char(4)      | NO   | PRI | NULL    |       |
+| DESCRIPTION | char(15)     | YES  |     | NULL    |       |
+| ON_HAND     | decimal(4,0) | YES  |     | NULL    |       |
+| CLASS       | char(2)      | YES  |     | NULL    |       |
+| PRICE       | decimal(6,2) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+5 rows in set (0.04 sec)
+
+mysql> #2
+mysql> INSERT INTO NONAPPLIANCE SELECT PART_NUM,
+    -> DESCRIPTION, ON_HAND, CLASS, PRICE FROM PART
+    -> WHERE NOT (CLASS = 'AP');
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM NONAPPLIANCE;
++----------+----------------+---------+-------+---------+
+| PART_NUM | DESCRIPTION    | ON_HAND | CLASS | PRICE   |
++----------+----------------+---------+-------+---------+
+| AT94     | Iron           |      50 | HW    |   24.95 |
+| BV06     | Home Gym       |      45 | SG    |  794.95 |
+| DL71     | Cordless Drill |      21 | HW    |  129.95 |
+| FD21     | Stand Mixer    |      22 | HW    |  159.95 |
+| KV29     | Treadmill      |       9 | SG    | 1390.00 |
++----------+----------------+---------+-------+---------+
+5 rows in set (0.01 sec)
+
+mysql> #3
+mysql> UPDATE NONAPPLIANCE SET DESCRIPTION = 'Deluxe Iron'
+    -> WHERE PART_NUM = 'AT94';
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM NONAPPLIANCE;
++----------+----------------+---------+-------+---------+
+| PART_NUM | DESCRIPTION    | ON_HAND | CLASS | PRICE   |
++----------+----------------+---------+-------+---------+
+| AT94     | Deluxe Iron    |      50 | HW    |   24.95 |
+| BV06     | Home Gym       |      45 | SG    |  794.95 |
+| DL71     | Cordless Drill |      21 | HW    |  129.95 |
+| FD21     | Stand Mixer    |      22 | HW    |  159.95 |
+| KV29     | Treadmill      |       9 | SG    | 1390.00 |
++----------+----------------+---------+-------+---------+
+5 rows in set (0.01 sec)
+
+mysql> #4
+mysql> UPDATE NONAPPLIANCE
+    -> SET PRICE = (PRICE * 1.02) WHERE
+    -> CLASS = 'SG';
+Query OK, 2 rows affected, 1 warning (0.06 sec)
+Rows matched: 2  Changed: 2  Warnings: 1
+
+mysql> SELECT * FROM NONAPPLIANCE;
++----------+----------------+---------+-------+---------+
+| PART_NUM | DESCRIPTION    | ON_HAND | CLASS | PRICE   |
++----------+----------------+---------+-------+---------+
+| AT94     | Deluxe Iron    |      50 | HW    |   24.95 |
+| BV06     | Home Gym       |      45 | SG    |  810.85 |
+| DL71     | Cordless Drill |      21 | HW    |  129.95 |
+| FD21     | Stand Mixer    |      22 | HW    |  159.95 |
+| KV29     | Treadmill      |       9 | SG    | 1417.80 |
++----------+----------------+---------+-------+---------+
+5 rows in set (0.01 sec)
+
+mysql> #5
+mysql> INSERT INTO NONAPPLIANCE VALUES('TL92',
+    -> 'TRIMMER', '11', 'HW', 29.95);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> SELECT *  FROM NONAPPLIANCE;
++----------+----------------+---------+-------+---------+
+| PART_NUM | DESCRIPTION    | ON_HAND | CLASS | PRICE   |
++----------+----------------+---------+-------+---------+
+| AT94     | Deluxe Iron    |      50 | HW    |   24.95 |
+| BV06     | Home Gym       |      45 | SG    |  810.85 |
+| DL71     | Cordless Drill |      21 | HW    |  129.95 |
+| FD21     | Stand Mixer    |      22 | HW    |  159.95 |
+| KV29     | Treadmill      |       9 | SG    | 1417.80 |
+| TL92     | TRIMMER        |      11 | HW    |   29.95 |
++----------+----------------+---------+-------+---------+
+6 rows in set (0.01 sec)
+
+mysql> #6
+mysql> DELETE FROM NONAPPLIANCE WHERE CLASS = 'SG';
+Query OK, 2 rows affected (0.06 sec)
+
+mysql> SELECT * FROM NONAPPLIANCE
+    -> ;
++----------+----------------+---------+-------+--------+
+| PART_NUM | DESCRIPTION    | ON_HAND | CLASS | PRICE  |
++----------+----------------+---------+-------+--------+
+| AT94     | Deluxe Iron    |      50 | HW    |  24.95 |
+| DL71     | Cordless Drill |      21 | HW    | 129.95 |
+| FD21     | Stand Mixer    |      22 | HW    | 159.95 |
+| TL92     | TRIMMER        |      11 | HW    |  29.95 |
++----------+----------------+---------+-------+--------+
+4 rows in set (0.01 sec)
+
+mysql> #7
+mysql> UPDATE NONAPPLIANCE SET CLASS = NULL WHERE PART_NUM =
+    -> 'FD21';
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM NONAPPLIANCE;
++----------+----------------+---------+-------+--------+
+| PART_NUM | DESCRIPTION    | ON_HAND | CLASS | PRICE  |
++----------+----------------+---------+-------+--------+
+| AT94     | Deluxe Iron    |      50 | HW    |  24.95 |
+| DL71     | Cordless Drill |      21 | HW    | 129.95 |
+| FD21     | Stand Mixer    |      22 | NULL  | 159.95 |
+| TL92     | TRIMMER        |      11 | HW    |  29.95 |
++----------+----------------+---------+-------+--------+
+4 rows in set (0.02 sec)
+
+mysql> #8
+mysql> ALTER TABLE NONAPPLIANCE
+    -> ADD ON_HAND_VALUE DECIMAL(7,2);
+Query OK, 4 rows affected (0.18 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> SHOW COLUMNS FROM NONAPPLIANCE;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| PART_NUM      | char(4)      | NO   | PRI | NULL    |       |
+| DESCRIPTION   | char(15)     | YES  |     | NULL    |       |
+| ON_HAND       | decimal(4,0) | YES  |     | NULL    |       |
+| CLASS         | char(2)      | YES  |     | NULL    |       |
+| PRICE         | decimal(6,2) | YES  |     | NULL    |       |
+| ON_HAND_VALUE | decimal(7,2) | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+6 rows in set (0.06 sec)
+
+mysql> UPDATE NONAPPLIANCE
+    -> SET ON_HAND_VALUE = (ON_HAND * PRICE);
+Query OK, 4 rows affected (0.02 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> SELECT * FROM NONAPPLIANCE;
++----------+----------------+---------+-------+--------+---------------+
+| PART_NUM | DESCRIPTION    | ON_HAND | CLASS | PRICE  | ON_HAND_VALUE |
++----------+----------------+---------+-------+--------+---------------+
+| AT94     | Deluxe Iron    |      50 | HW    |  24.95 |       1247.50 |
+| DL71     | Cordless Drill |      21 | HW    | 129.95 |       2728.95 |
+| FD21     | Stand Mixer    |      22 | NULL  | 159.95 |       3518.90 |
+| TL92     | TRIMMER        |      11 | HW    |  29.95 |        329.45 |
++----------+----------------+---------+-------+--------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> #9
+mysql> ALTER TABLE NONAPPLIANCE
+    -> MODIFY DESCRIPTION CHAR(30);
+Query OK, 4 rows affected (0.14 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> SHOW COLUMNS FROM NONAPPLIANCE;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| PART_NUM      | char(4)      | NO   | PRI | NULL    |       |
+| DESCRIPTION   | char(30)     | YES  |     | NULL    |       |
+| ON_HAND       | decimal(4,0) | YES  |     | NULL    |       |
+| CLASS         | char(2)      | YES  |     | NULL    |       |
+| PRICE         | decimal(6,2) | YES  |     | NULL    |       |
+| ON_HAND_VALUE | decimal(7,2) | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+6 rows in set (0.06 sec)
+
+mysql> #10
+mysql> DROP TABLE NONAPPLIANCE;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> SHOW COLUMNS FROM NONAPPLIANCE;
+ERROR 1146 (42S02): Table 'PREMIERE.NONAPPLIANCE' doesn't exist
+mysql> NOTEE

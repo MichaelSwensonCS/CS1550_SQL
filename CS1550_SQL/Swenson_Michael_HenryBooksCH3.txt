@@ -1,0 +1,1198 @@
+#CSIS1550 Module 3 Chapter 3 Michael Swenson
+#Henry Books Database Creation
+
+mysql> USE HENRY_BOOKS;
+Database changed
+mysql> CREATE TABLE AUTHOR 
+    -> (AUTHOR_NUM INTEGER(3) PRIMARY KEY,
+    -> AUTHOR_LAST CHAR(12),
+    -> AUTHOR_FIRST CHAR(10) );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE BOOK 
+    -> (BOOK_CODE CHAR(4) PRIMARY KEY,
+    -> TITLE CHAR(40),
+    -> PUBLISHER_CODE CHAR(3),
+    -> TYPE CHAR(3),
+    -> PRICE DECIMAL(4,2),
+    -> PAPERBACK CHAR(1) );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE BRANCH 
+    -> (BRANCH_NUM INTEGER(3) PRIMARY KEY,
+    -> BRANCH_NAME CHAR(50),
+    -> BRANCH_LOCATION CHAR(50),
+    -> NUM_EMPLOYEES DECIMAL(2,0) );
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> CREATE TABLE INVENTORY 
+    -> (BOOK_CODE CHAR(4),
+    -> BRANCH_NUM INTEGER(3),
+    -> ON_HAND DECIMAL(2,0),
+    -> PRIMARY KEY (BOOK_CODE, BRANCH_NUM) );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE PUBLISHER 
+    -> (PUBLISHER_CODE CHAR(3) PRIMARY KEY,
+    -> PUBLISHER_NAME CHAR(25),
+    -> CITY CHAR(20) );
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> CREATE TABLE WROTE 
+    -> (BOOK_CODE CHAR(4),
+    -> AUTHOR_NUM INTEGER(3),
+    -> SEQUENCE DECIMAL(1,0),
+    -> PRIMARY KEY (BOOK_CODE, AUTHOR_NUM) );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SHOW COLUMNS FROM AUTHOR;
++--------------+----------+------+-----+---------+-------+
+| Field        | Type     | Null | Key | Default | Extra |
++--------------+----------+------+-----+---------+-------+
+| AUTHOR_NUM   | int(3)   | NO   | PRI | NULL    |       |
+| AUTHOR_LAST  | char(12) | YES  |     | NULL    |       |
+| AUTHOR_FIRST | char(10) | YES  |     | NULL    |       |
++--------------+----------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> SHOW COLUMNS FROM BOOK;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| BOOK_CODE      | char(4)      | NO   | PRI | NULL    |       |
+| TITLE          | char(40)     | YES  |     | NULL    |       |
+| PUBLISHER_CODE | char(3)      | YES  |     | NULL    |       |
+| TYPE           | char(3)      | YES  |     | NULL    |       |
+| PRICE          | decimal(4,2) | YES  |     | NULL    |       |
+| PAPERBACK      | char(1)      | YES  |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> SHOW COLUMNS FROM BRANCH;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| BRANCH_NUM      | int(3)       | NO   | PRI | NULL    |       |
+| BRANCH_NAME     | char(50)     | YES  |     | NULL    |       |
+| BRANCH_LOCATION | char(50)     | YES  |     | NULL    |       |
+| NUM_EMPLOYEES   | decimal(2,0) | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> SHOW COLUMNS FROM INVENTORY;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| BOOK_CODE  | char(4)      | NO   | PRI |         |       |
+| BRANCH_NUM | int(3)       | NO   | PRI | 0       |       |
+| ON_HAND    | decimal(2,0) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> SHOW COLUMNS FROM PUBLISHER;
++----------------+----------+------+-----+---------+-------+
+| Field          | Type     | Null | Key | Default | Extra |
++----------------+----------+------+-----+---------+-------+
+| PUBLISHER_CODE | char(3)  | NO   | PRI | NULL    |       |
+| PUBLISHER_NAME | char(25) | YES  |     | NULL    |       |
+| CITY           | char(20) | YES  |     | NULL    |       |
++----------------+----------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> SHOW COLUMNS FROM WROTE;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| BOOK_CODE  | char(4)      | NO   | PRI |         |       |
+| AUTHOR_NUM | int(3)       | NO   | PRI | 0       |       |
+| SEQUENCE   | decimal(1,0) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (1,'Morrison','Toni');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (2,'Solotaroff','Paul');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (3,'Vintage','Vernor');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (4,'Francis','Dick');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (5,'Straub','Peter');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (6,'King','Stephen');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (7,'Pratt','Philip');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (8,'Chase','Truddi');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (9,'Collins','Bradley');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (10,'Heller','Joseph');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (11,'Wills','Gary');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (12,'Hofstadter','Douglas R.');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (13,'Lee','Harper');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (14,'Ambrose','Stephen E.');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (15,'Rowling','J.K.');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (16,'Salinger','J.D.');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (17,'Heaney','Seamus');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (18,'Camus','Albert');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (19,'Collins, Jr.','Bradley');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (20,'Steinbeck','John');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (21,'Castelman','Riva');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (22,'Owen','Barbara');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (23,'O''Rourke','Randy');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (24,'Kidder','Tracy');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO AUTHOR
+    -> VALUES
+    -> (25,'Schleining','Lon');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('0180','A Deepness in the Sky','TB','SFI',7.19,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('0189','Magic Terror','FA','HOR',7.99,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('0200','The Stranger','VB','FIC',8.00,'Y');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('0378','Venice','SS','ART',24.50,'N');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('079X','Second Wind','PU','MYS',24.95,'N');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('0808','The Edge','JP','MYS',6.99,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('1351','Dreamcatcher: A Novel','SC','HOR',19.60,'N');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('1382','Treasure Chests','TA','ART',24.46,'N');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('138X','Beloved','PL','FIC',12.95,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('2226','Harry Potter and the Prisoner of Azkaban','ST','SFI',13.96,'N');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('2281','Van Gogh and Gauguin','WP','ART',21.00,'N');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('2766','Of Mice and Men','PE','FIC',6.95,'Y');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('2908','Electric Light','FS','POE',14.00,'N');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('3350','Group: Six People in Search of a Life','BP','PSY',10.40,'Y');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('3743','Nine Stories','LB','FIC',5.99,'Y');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('3906','The Soul of a New Machine','BY','SCI',11.16,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('5163','Travels with Charley','PE','TRA',7.95,'Y');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('5790','Catch-22','SC','FIC',12.00,'Y');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('6128','Jazz','PL','FIC',12.95,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('6328','Band of Brothers','TO','HIS',9.60,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('669X','A Guide to SQL','CT','CMP',37.95,'Y');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('6908','Franny and Zooey','LB','FIC',5.99,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('7405','East of Eden','PE','FIC',12.95,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('7443','Harry Potter and the Goblet of Fire','ST','SFI',18.16,'N');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('7559','The Fall','VB','FIC',8.00,'Y');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('8092','Godel, Escher, Bach','BA','PHI',14.00,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('8720','When Rabbit Howls','JP','PSY',6.29,'Y');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('9611','Black House','RH','HOR',18.81,'N');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('9627','Song of Solomon','PL','FIC',14.00,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('9701','The Grapes of Wrath','PE','FIC',13.00,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('9882','Slay Ride','JP','MYS',6.99,'Y');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('9883','The Catcher in the Rye','LB','FIC',5.99,'Y');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BOOK
+    -> VALUES
+    -> ('9931','To Kill a Mockingbird','HC','FIC',18.00,'N');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BRANCH
+    -> VALUES
+    -> (1,'Henry Downtown','16 Riverview',10);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BRANCH
+    -> VALUES
+    -> (2,'Henry On The Hill','1289 Bedford',6);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO BRANCH
+    -> VALUES
+    -> (3,'Henry Brentwood','Brentwood Mall',15);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO BRANCH
+    -> VALUES
+    -> (4,'Henry Eastshore','Eastshore Mall',9);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('0180',1,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('0189',2,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('0200',1,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('0200',2,3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('0378',3,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('079X',2,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('079X',3,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('079X',4,3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('0808',2,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('1351',2,4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('1351',3,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('1382',2,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('138X',2,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('2226',1,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('2226',3,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('2226',4,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('2281',4,3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('2766',3,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('2908',1,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('2908',4,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('3350',1,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('3743',2,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('3906',2,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('3906',3,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('5163',1,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('5790',4,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('6128',2,4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('6128',3,3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('6328',2,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('669X',1,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('6908',2,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('7405',3,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('7443',4,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('7559',2,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('8092',3,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('8720',1,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('9611',1,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('9627',3,5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('9627',4,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('9701',1,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('9701',2,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('9701',3,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('9701',4,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('9882',3,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('9883',2,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('9883',4,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO INVENTORY
+    -> VALUES
+    -> ('9931',1,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('AH','Arkham House','Sauk City WI');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('AP','Arcade Publishing','New York');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('BA','Basic Books','Boulder CO');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('BP','Berkley Publishing','Boston');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('BY','Back Bay Books','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('CT','Course Technology','Boston');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('FA','Fawcett Books','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('FS','Farrar Straus and Giroux','New York');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('HC','HarperCollins Publishers','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('JP','Jove Publications','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('JT','Jeremy P. Tarcher','Los Angeles');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('LB','Lb Books','New York');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('MP','McPherson and Co.','Kingston');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('PE','Penguin USA','New York');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('PL','Plume','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> USE HENRY_BOOKS;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('PU','Putnam Publishing Group','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('RH','Random House','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('SB','Schoken Books','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('SC','Scribner','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('SS','Simon and Schuster','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('ST','Scholastic Trade','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('TA','Taunton Press','Newtown CT');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('TB','Tor Books','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('TH','Thames and Hudson','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('TO','Touchstone Books','Westport CT');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('VB','Vintage Books','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('WN','W.W. Norton','New York');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO PUBLISHER
+    -> VALUES
+    -> ('WP','Westview Press','Boulder CO');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('0180',3,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('0189',5,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('0200',18,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('0378',11,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('079X',4,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('0808',4,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('1351',6,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('1382',23,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('1382',25,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('138X',1,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('2226',15,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('2281',9,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('2281',19,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('2766',20,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('2908',17,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('3350',2,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('3743',16,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('3906',24,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('5163',20,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('5790',10,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('6128',1,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('6328',14,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('669X',7,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('6908',16,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('7405',20,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('7443',15,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('7559',18,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('8092',12,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('8720',8,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('9611',5,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('9611',6,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('9627',1,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('9701',20,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('9882',4,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('9883',16,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO WROTE
+    -> VALUES
+    -> ('9931',13,1);
+Query OK, 1 row affected (0.00 sec)
+
+
+mysql> SELECT * FROM AUTHOR;
++------------+--------------+--------------+
+| AUTHOR_NUM | AUTHOR_LAST  | AUTHOR_FIRST |
++------------+--------------+--------------+
+|          1 | Morrison     | Toni         |
+|          2 | Solotaroff   | Paul         |
+|          3 | Vintage      | Vernor       |
+|          4 | Francis      | Dick         |
+|          5 | Straub       | Peter        |
+|          6 | King         | Stephen      |
+|          7 | Pratt        | Philip       |
+|          8 | Chase        | Truddi       |
+|          9 | Collins      | Bradley      |
+|         10 | Heller       | Joseph       |
+|         11 | Wills        | Gary         |
+|         12 | Hofstadter   | Douglas R.   |
+|         13 | Lee          | Harper       |
+|         14 | Ambrose      | Stephen E.   |
+|         15 | Rowling      | J.K.         |
+|         16 | Salinger     | J.D.         |
+|         17 | Heaney       | Seamus       |
+|         18 | Camus        | Albert       |
+|         19 | Collins, Jr. | Bradley      |
+|         20 | Steinbeck    | John         |
+|         21 | Castelman    | Riva         |
+|         22 | Owen         | Barbara      |
+|         23 | O'Rourke     | Randy        |
+|         24 | Kidder       | Tracy        |
+|         25 | Schleining   | Lon          |
++------------+--------------+--------------+
+25 rows in set (0.00 sec)
+
+mysql> SELECT * FROM BOOK;
++-----------+------------------------------------------+----------------+------+-------+-----------+
+| BOOK_CODE | TITLE                                    | PUBLISHER_CODE | TYPE | PRICE | PAPERBACK |
++-----------+------------------------------------------+----------------+------+-------+-----------+
+| 0180      | A Deepness in the Sky                    | TB             | SFI  |  7.19 | Y         |
+| 0189      | Magic Terror                             | FA             | HOR  |  7.99 | Y         |
+| 0200      | The Stranger                             | VB             | FIC  |  8.00 | Y         |
+| 0378      | Venice                                   | SS             | ART  | 24.50 | N         |
+| 079X      | Second Wind                              | PU             | MYS  | 24.95 | N         |
+| 0808      | The Edge                                 | JP             | MYS  |  6.99 | Y         |
+| 1351      | Dreamcatcher: A Novel                    | SC             | HOR  | 19.60 | N         |
+| 1382      | Treasure Chests                          | TA             | ART  | 24.46 | N         |
+| 138X      | Beloved                                  | PL             | FIC  | 12.95 | Y         |
+| 2226      | Harry Potter and the Prisoner of Azkaban | ST             | SFI  | 13.96 | N         |
+| 2281      | Van Gogh and Gauguin                     | WP             | ART  | 21.00 | N         |
+| 2766      | Of Mice and Men                          | PE             | FIC  |  6.95 | Y         |
+| 2908      | Electric Light                           | FS             | POE  | 14.00 | N         |
+| 3350      | Group: Six People in Search of a Life    | BP             | PSY  | 10.40 | Y         |
+| 3743      | Nine Stories                             | LB             | FIC  |  5.99 | Y         |
+| 3906      | The Soul of a New Machine                | BY             | SCI  | 11.16 | Y         |
+| 5163      | Travels with Charley                     | PE             | TRA  |  7.95 | Y         |
+| 5790      | Catch-22                                 | SC             | FIC  | 12.00 | Y         |
+| 6128      | Jazz                                     | PL             | FIC  | 12.95 | Y         |
+| 6328      | Band of Brothers                         | TO             | HIS  |  9.60 | Y         |
+| 669X      | A Guide to SQL                           | CT             | CMP  | 37.95 | Y         |
+| 6908      | Franny and Zooey                         | LB             | FIC  |  5.99 | Y         |
+| 7405      | East of Eden                             | PE             | FIC  | 12.95 | Y         |
+| 7443      | Harry Potter and the Goblet of Fire      | ST             | SFI  | 18.16 | N         |
+| 7559      | The Fall                                 | VB             | FIC  |  8.00 | Y         |
+| 8092      | Godel, Escher, Bach                      | BA             | PHI  | 14.00 | Y         |
+| 8720      | When Rabbit Howls                        | JP             | PSY  |  6.29 | Y         |
+| 9611      | Black House                              | RH             | HOR  | 18.81 | N         |
+| 9627      | Song of Solomon                          | PL             | FIC  | 14.00 | Y         |
+| 9701      | The Grapes of Wrath                      | PE             | FIC  | 13.00 | Y         |
+| 9882      | Slay Ride                                | JP             | MYS  |  6.99 | Y         |
+| 9883      | The Catcher in the Rye                   | LB             | FIC  |  5.99 | Y         |
+| 9931      | To Kill a Mockingbird                    | HC             | FIC  | 18.00 | N         |
++-----------+------------------------------------------+----------------+------+-------+-----------+
+33 rows in set (0.00 sec)
+
+mysql> SELECT * FROM BRANCH;
++------------+-------------------+-----------------+---------------+
+| BRANCH_NUM | BRANCH_NAME       | BRANCH_LOCATION | NUM_EMPLOYEES |
++------------+-------------------+-----------------+---------------+
+|          1 | Henry Downtown    | 16 Riverview    |            10 |
+|          2 | Henry On The Hill | 1289 Bedford    |             6 |
+|          3 | Henry Brentwood   | Brentwood Mall  |            15 |
+|          4 | Henry Eastshore   | Eastshore Mall  |             9 |
++------------+-------------------+-----------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM INVENTORY;
++-----------+------------+---------+
+| BOOK_CODE | BRANCH_NUM | ON_HAND |
++-----------+------------+---------+
+| 0180      |          1 |       2 |
+| 0189      |          2 |       2 |
+| 0200      |          1 |       1 |
+| 0200      |          2 |       3 |
+| 0378      |          3 |       2 |
+| 079X      |          2 |       1 |
+| 079X      |          3 |       2 |
+| 079X      |          4 |       3 |
+| 0808      |          2 |       1 |
+| 1351      |          2 |       4 |
+| 1351      |          3 |       2 |
+| 1382      |          2 |       1 |
+| 138X      |          2 |       3 |
+| 2226      |          1 |       3 |
+| 2226      |          3 |       2 |
+| 2226      |          4 |       1 |
+| 2281      |          4 |       3 |
+| 2766      |          3 |       2 |
+| 2908      |          1 |       3 |
+| 2908      |          4 |       1 |
+| 3350      |          1 |       2 |
+| 3743      |          2 |       1 |
+| 3906      |          2 |       1 |
+| 3906      |          3 |       2 |
+| 5163      |          1 |       1 |
+| 5790      |          4 |       2 |
+| 6128      |          2 |       4 |
+| 6128      |          3 |       3 |
+| 6328      |          2 |       2 |
+| 669X      |          1 |       1 |
+| 6908      |          2 |       2 |
+| 7405      |          3 |       2 |
+| 7443      |          4 |       1 |
+| 7559      |          2 |       2 |
+| 8092      |          3 |       1 |
+| 8720      |          1 |       3 |
+| 9611      |          1 |       2 |
+| 9627      |          3 |       5 |
+| 9627      |          4 |       2 |
+| 9701      |          1 |       2 |
+| 9701      |          2 |       1 |
+| 9701      |          3 |       3 |
+| 9701      |          4 |       2 |
+| 9882      |          3 |       3 |
+| 9883      |          2 |       3 |
+| 9883      |          4 |       2 |
+| 9931      |          1 |       2 |
++-----------+------------+---------+
+47 rows in set (0.00 sec)
+
+mysql> SELECT * FROM PUBLISHER;
++----------------+--------------------------+--------------+
+| PUBLISHER_CODE | PUBLISHER_NAME           | CITY         |
++----------------+--------------------------+--------------+
+| AH             | Arkham House             | Sauk City WI |
+| AP             | Arcade Publishing        | New York     |
+| BA             | Basic Books              | Boulder CO   |
+| BP             | Berkley Publishing       | Boston       |
+| BY             | Back Bay Books           | New York     |
+| CT             | Course Technology        | Boston       |
+| FA             | Fawcett Books            | New York     |
+| FS             | Farrar Straus and Giroux | New York     |
+| HC             | HarperCollins Publishers | New York     |
+| JP             | Jove Publications        | New York     |
+| JT             | Jeremy P. Tarcher        | Los Angeles  |
+| LB             | Lb Books                 | New York     |
+| MP             | McPherson and Co.        | Kingston     |
+| PE             | Penguin USA              | New York     |
+| PL             | Plume                    | New York     |
+| PU             | Putnam Publishing Group  | New York     |
+| RH             | Random House             | New York     |
+| SB             | Schoken Books            | New York     |
+| SC             | Scribner                 | New York     |
+| SS             | Simon and Schuster       | New York     |
+| ST             | Scholastic Trade         | New York     |
+| TA             | Taunton Press            | Newtown CT   |
+| TB             | Tor Books                | New York     |
+| TH             | Thames and Hudson        | New York     |
+| TO             | Touchstone Books         | Westport CT  |
+| VB             | Vintage Books            | New York     |
+| WN             | W.W. Norton              | New York     |
+| WP             | Westview Press           | Boulder CO   |
++----------------+--------------------------+--------------+
+28 rows in set (0.00 sec)
+
+mysql> SELECT * FROM WROTE;
++-----------+------------+----------+
+| BOOK_CODE | AUTHOR_NUM | SEQUENCE |
++-----------+------------+----------+
+| 0180      |          3 |        1 |
+| 0189      |          5 |        1 |
+| 0200      |         18 |        1 |
+| 0378      |         11 |        1 |
+| 079X      |          4 |        1 |
+| 0808      |          4 |        1 |
+| 1351      |          6 |        1 |
+| 1382      |         23 |        2 |
+| 1382      |         25 |        1 |
+| 138X      |          1 |        1 |
+| 2226      |         15 |        1 |
+| 2281      |          9 |        2 |
+| 2281      |         19 |        1 |
+| 2766      |         20 |        1 |
+| 2908      |         17 |        1 |
+| 3350      |          2 |        1 |
+| 3743      |         16 |        1 |
+| 3906      |         24 |        1 |
+| 5163      |         20 |        1 |
+| 5790      |         10 |        1 |
+| 6128      |          1 |        1 |
+| 6328      |         14 |        1 |
+| 669X      |          7 |        1 |
+| 6908      |         16 |        1 |
+| 7405      |         20 |        1 |
+| 7443      |         15 |        1 |
+| 7559      |         18 |        1 |
+| 8092      |         12 |        1 |
+| 8720      |          8 |        1 |
+| 9611      |          5 |        2 |
+| 9611      |          6 |        1 |
+| 9627      |          1 |        1 |
+| 9701      |         20 |        1 |
+| 9882      |          4 |        1 |
+| 9883      |         16 |        1 |
+| 9931      |         13 |        1 |
++-----------+------------+----------+
+36 rows in set (0.00 sec)
+
+mysql> notee

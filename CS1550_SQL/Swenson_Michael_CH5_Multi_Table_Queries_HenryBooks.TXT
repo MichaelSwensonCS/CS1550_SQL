@@ -1,0 +1,349 @@
+#CSIS 1550 Chapter 5 Henry Books Multi-Table queries
+#Michael Swenson 
+
+#1
+mysql> SELECT BOOK_CODE,TITLE,PUBLISHER.PUBLISHER_CODE,PUBLISHER_NAME FROM BOOK,PUBLISHER 
+-> WHERE BOOK.PUBLISHER_CODE=PUBLISHER.PUBLISHER_CODE 
+-> ORDER BY PUBLISHER_NAME;
++----------+------------------------------------------+---------------+--------------------------+
+| BookCode | Title                                    | PublisherCode | PublisherName            |
++----------+------------------------------------------+---------------+--------------------------+
+| 3906     | The Soul of a New Machine                | BY            | Back Bay Books           |
+| 8092     | Godel, Escher, Bach                      | BA            | Basic Books              |
+| 3350     | Group: Six People in Search of a Life    | BP            | Berkley Publishing       |
+| 669X     | A Guide to SQL                           | CT            | Course Technology        |
+| 2908     | Electric Light                           | FS            | Farrar Straus and Giroux |
+| 0189     | Magic Terror                             | FA            | Fawcett Books            |
+| 9931     | To Kill a Mockingbird                    | HC            | HarperCollins Publishers |
+| 9882     | Slay Ride                                | JP            | Jove Publications        |
+| 0808     | The Edge                                 | JP            | Jove Publications        |
+| 8720     | When Rabbit Howls                        | JP            | Jove Publications        |
+| 3743     | Nine Stories                             | LB            | Lb Books                 |
+| 6908     | Franny and Zooey                         | LB            | Lb Books                 |
+| 9883     | The Catcher in the Rye                   | LB            | Lb Books                 |
+| 2766     | Of Mice and Men                          | PE            | Penguin USA              |
+| 7405     | East of Eden                             | PE            | Penguin USA              |
+| 5163     | Travels with Charley                     | PE            | Penguin USA              |
+| 9701     | The Grapes of Wrath                      | PE            | Penguin USA              |
+| 138X     | Beloved                                  | PL            | Plume                    |
+| 6128     | Jazz                                     | PL            | Plume                    |
+| 9627     | Song of Solomon                          | PL            | Plume                    |
+| 079X     | Second Wind                              | PU            | Putnam Publishing Group  |
+| 9611     | Black House                              | RH            | Random House             |
+| 7443     | Harry Potter and the Goblet of Fire      | ST            | Scholastic Trade         |
+| 2226     | Harry Potter and the Prisoner of Azkaban | ST            | Scholastic Trade         |
+| 5790     | Catch-22                                 | SC            | Scribner                 |
+| 1351     | Dreamcatcher: A Novel                    | SC            | Scribner                 |
+| 0378     | Venice                                   | SS            | Simon and Schuster       |
+| 1382     | Treasure Chests                          | TA            | Taunton Press            |
+| 0180     | A Deepness in the Sky                    | TB            | Tor Books                |
+| 6328     | Band of Brothers                         | TO            | Touchstone Books         |
+| 7559     | The Fall                                 | VB            | Vintage Books            |
+| 0200     | The Stranger                             | VB            | Vintage Books            |
+| 2281     | Van Gogh and Gauguin                     | WP            | Westview Press           |
++----------+------------------------------------------+---------------+--------------------------+
+33 rows in set (0.00 sec)
+
+#2
+mysql>SELECT BOOK_CODE,TITLE,PRICE FROM BOOK,PUBLISHER 
+->WHERE BOOK.PUBLISHER_CODE=PUBLISHER.PUBLISHER_CODE AND PUBLISHER_NAME='Plume';
++----------+-----------------+-------+
+| BookCode | Title           | Price |
++----------+-----------------+-------+
+| 138X     | Beloved         | 12.95 |
+| 6128     | Jazz            | 12.95 |
+| 9627     | Song of Solomon | 14.00 |
++----------+-----------------+-------+
+3 rows in set (0.00 sec)
+
+#3
+mysql>SELECT BOOK_CODE,TITLE,PRICE FROM BOOK,PUBLISHER
+-> WHERE BOOK.PUBLISHER_CODE=PUBLISHER.PUBLISHER_CODE AND PUBLISHER_NAME='Plume' AND PRICE>=14;
++----------+-----------------+-------+
+| BookCode | Title           | Price |
++----------+-----------------+-------+
+| 9627     | Song of Solomon | 14.00 |
++----------+-----------------+-------+
+1 row in set (0.00 sec)
+
+#4
+mysql>SELECT BOOK.BOOK_CODE,BOOK.TITLE,INVENTORY.ON_HAND FROM BRANCH,INVENTORY,BOOK 
+-> WHERE BRANCH.BRANCH_NUM=INVENTORY.BRANCH_NUM
+-> AND INVENTORY.BOOK_CODE=BOOK.BOOK_CODE AND BRANCH.BRANCH_NUM=4;
++----------+------------------------------------------+--------+
+| BookCode | Title                                    | OnHand |
++----------+------------------------------------------+--------+
+| 079X     | Second Wind                              |      3 |
+| 2226     | Harry Potter and the Prisoner of Azkaban |      1 |
+| 2281     | Van Gogh and Gauguin                     |      3 |
+| 2908     | Electric Light                           |      1 |
+| 5790     | Catch-22                                 |      2 |
+| 7443     | Harry Potter and the Goblet of Fire      |      1 |
+| 9627     | Song of Solomon                          |      2 |
+| 9701     | The Grapes of Wrath                      |      2 |
+| 9883     | The Catcher in the Rye                   |      2 |
++----------+------------------------------------------+--------+
+9 rows in set (0.00 sec)
+
+#5
+mysql>SELECT TITLE FROM BOOK,PUBLISHER 
+-> WHERE BOOK.PUBLISHER_CODE=PUBLISHER.PUBLISHER_CODE AND BOOK.TYPE='PSY' AND PUBLISHER.PUBLISHER_NAME='Jove Publications';
++-------------------+
+| Title             |
++-------------------+
+| When Rabbit Howls |
++-------------------+
+1 row in set (0.00 sec)
+
+#6
+mysql>SELECT TITLE FROM BOOK 
+->WHERE BOOK_CODE IN (SELECT BOOK_CODE FROM WROTE WHERE AUTHOR_NUM=18);
++--------------+
+| Title        |
++--------------+
+| The Stranger |
+| The Fall     |
++--------------+
+2 rows in set (0.00 sec)
+
+#7
+mysql> SELECT title FROM BOOK,WROTE 
+->WHERE WROTE.AUTHOR_NUM=18 AND BOOK.BOOK_CODE=WROTE.BOOK_CODE 
+->AND EXISTS(SELECT TITLE FROM BOOK,WROTE WHERE BOOK.BOOK_CODE=WROTE.BOOK_CODE);
++--------------+
+| Title        |
++--------------+
+| The Stranger |
+| The Fall     |
++--------------+
+2 rows in set (0.00 sec)
+
+
+#8
+mysql>SELECT BOOK.BOOK_CODE,BOOK.TITLE FROM BOOK,INVENTORY,BRANCH,WROTE 
+->WHERE BRANCH.BRANCH_NUM=INVENTORY.BRANCH_NUM AND INVENTORY.BOOK_CODE=BOOK.BOOK_CODE AND BOOK.BOOK_CODE=WROTE.BOOK_CODE AND BRANCH.BRANCH_NUM=2 AND WROTE.AUTHOR_NUM=20;
++----------+---------------------+
+| BookCode | Title               |
++----------+---------------------+
+| 9701     | The Grapes of Wrath |
++----------+---------------------+
+1 row in set (0.00 sec)
+
+#9
+mysql>SELECT A.BOOK_CODE,B.BOOK_CODE FROM BOOK AS A,BOOK AS B 
+-> WHERE A.PRICE=B.PRICE AND A.BOOK_CODE<>B.BOOK_CODE;
++----------+----------+-------+
+| BookCode | BookCode | Price |
++----------+----------+-------+
+| 0200     | 7559     |  8.00 |
+| 0808     | 9882     |  6.99 |
+| 138X     | 6128     | 12.95 |
+| 138X     | 7405     | 12.95 |
+| 2908     | 8092     | 14.00 |
+| 2908     | 9627     | 14.00 |
+| 3743     | 6908     |  5.99 |
+| 3743     | 9883     |  5.99 |
+| 6128     | 7405     | 12.95 |
+| 6908     | 9883     |  5.99 |
+| 8092     | 9627     | 14.00 |
++----------+----------+-------+
+11 rows in set (0.00 sec)
+
+#10
+mysql>SELECT BOOK.TITLE,AUTHOR.AUTHOR_LAST,INVENTORY.ON_HAND FROM BRANCH,AUTHOR,INVENTORY,BOOK,WROTE 
+-> WHERE BRANCH.BRANCH_NUM=INVENTORY.BRANCH_NUM 
+-> AND INVENTORY.BOOK_CODE=BOOK.BOOK_CODE AND BOOK.BOOK_CODE=WROTE.BOOK_CODE
+-> AND WROTE.AUTHOR_NUM=AUTHOR.AUTHOR_NUM AND BRANCH.BRANCH_NUM=4;
++------------------------------------------+--------------+--------+
+| Title                                    | AuthorLast   | OnHand |
++------------------------------------------+--------------+--------+
+| Second Wind                              | Francis      |      3 |
+| Harry Potter and the Prisoner of Azkaban | Rowling      |      1 |
+| Van Gogh and Gauguin                     | Collins      |      3 |
+| Van Gogh and Gauguin                     | Collins, Jr. |      3 |
+| Electric Light                           | Heaney       |      1 |
+| Catch-22                                 | Heller       |      2 |
+| Harry Potter and the Goblet of Fire      | Rowling      |      1 |
+| Song of Solomon                          | Morrison     |      2 |
+| The Grapes of Wrath                      | Steinbeck    |      2 |
+| The Catcher in the Rye                   | Salinger     |      2 |
++------------------------------------------+--------------+--------+
+10 rows in set (0.00 sec)
+
+#11
+mysql> SELECT BOOK.TITLE,AUTHOR.AUTHOR_LAST,INVENTORY.ON_HAND FROM BRANCH,AUTHOR,INVENTORY,BOOK,WROTE 
+-> WHERE BRANCH.BRANCH_NUM=INVENTORY.BRANCH_NUM AND INVENTORY.BOOK_CODE=BOOK.BOOK_CODE
+-> AND BOOK.BOOK_CODE=WROTE.BOOK_CODE AND WROTE.AUTHOR_NUM=AUTHOR.AUTHOR_NUM AND BRANCH.BRANCH_NUM=4 
+-> AND BOOK.PAPERBACK='Y';
++------------------------+------------+--------+
+| Title                  | AuthorLast | OnHand |
++------------------------+------------+--------+
+| Catch-22               | Heller     |      2 |
+| Song of Solomon        | Morrison   |      2 |
+| The Grapes of Wrath    | Steinbeck  |      2 |
+| The Catcher in the Rye | Salinger   |      2 |
++------------------------+------------+--------+
+4 rows in set (0.00 sec)
+
+#12
+mysql> SELECT BOOK.BOOK_CODE,BOOK.TITLE FROM BOOK,PUBLISHER 
+->WHERE BOOK.PUBLISHER_CODE=PUBLISHER.PUBLISHER_CODE 
+->AND (BOOK.PRICE>10 OR PUBLISHER.CITY='Boston');
++----------+------------------------------------------+
+| BookCode | Title                                    |
++----------+------------------------------------------+
+| 0378     | Venice                                   |
+| 079X     | Second Wind                              |
+| 1351     | Dreamcatcher: A Novel                    |
+| 1382     | Treasure Chests                          |
+| 138X     | Beloved                                  |
+| 2226     | Harry Potter and the Prisoner of Azkaban |
+| 2281     | Van Gogh and Gauguin                     |
+| 2908     | Electric Light                           |
+| 3350     | Group: Six People in Search of a Life    |
+| 3906     | The Soul of a New Machine                |
+| 5790     | Catch-22                                 |
+| 6128     | Jazz                                     |
+| 669X     | A Guide to SQL                           |
+| 7405     | East of Eden                             |
+| 7443     | Harry Potter and the Goblet of Fire      |
+| 8092     | Godel, Escher, Bach                      |
+| 9611     | Black House                              |
+| 9627     | Song of Solomon                          |
+| 9701     | The Grapes of Wrath                      |
+| 9931     | To Kill a Mockingbird                    |
++----------+------------------------------------------+
+20 rows in set (0.00 sec)
+
+
+
+#13
+mysql> SELECT BOOK.BOOK_CODE,BOOK.TITLE FROM BOOK,PUBLISHER 
+->WHERE BOOK.PUBLISHER_CODE=PUBLISHER.PUBLISHER_CODE 
+->AND (BOOK.PRICE>10 AND PUBLISHER.CITY='Boston');
++----------+---------------------------------------+
+| BookCode | Title                                 |
++----------+---------------------------------------+
+| 3350     | Group: Six People in Search of a Life |
+| 669X     | A Guide to SQL                        |
++----------+---------------------------------------+
+2 rows in set (0.00 sec)
+
+#14
+mysql> SELECT BOOK.BOOK_CODE, BOOK.TITLE FROM BOOK, PUBLISHER
+-> WHERE BOOK.PUBLISHER_CODE = PUBLISHER.PUBLISHER_CODE 
+-> AND (BOOK.PRICE > 10 AND PUBLISHER.CITY = <>'Boston');
++----------+------------------------------------------+
+| BookCode | Title                                    |
++----------+------------------------------------------+
+| 0378     | Venice                                   |
+| 079X     | Second Wind                              |
+| 1351     | Dreamcatcher: A Novel                    |
+| 1382     | Treasure Chests                          |
+| 138X     | Beloved                                  |
+| 2226     | Harry Potter and the Prisoner of Azkaban |
+| 2281     | Van Gogh and Gauguin                     |
+| 2908     | Electric Light                           |
+| 3906     | The Soul of a New Machine                |
+| 5790     | Catch-22                                 |
+| 6128     | Jazz                                     |
+| 7405     | East of Eden                             |
+| 7443     | Harry Potter and the Goblet of Fire      |
+| 8092     | Godel, Escher, Bach                      |
+| 9611     | Black House                              |
+| 9627     | Song of Solomon                          |
+| 9701     | The Grapes of Wrath                      |
+| 9931     | To Kill a Mockingbird                    |
++----------+------------------------------------------+
+18 rows in set (0.00 sec)
+
+#15
+mysql> SELECT BOOK.BOOK_CODE,BOOK.TITLE FROM BOOK 
+-> WHERE PRICE>ALL(SELECT PRICE FROM BOOK WHERE type='HOR');
++----------+----------------------+
+| BookCode | Title                |
++----------+----------------------+
+| 0378     | Venice               |
+| 079X     | Second Wind          |
+| 1382     | Treasure Chests      |
+| 2281     | Van Gogh and Gauguin |
+| 669X     | A Guide to SQL       |
++----------+----------------------+
+5 rows in set (0.00 sec)
+
+#16
+SELECT BOOK.BOOK_CODE,BOOK.TITLE FROM BOOK 
+-> WHERE PRICE>ANY(SELECT PRICE FROM BOOK WHERE TYPE='HOR');
++----------+------------------------------------------+
+| BookCode | Title                                    |
++----------+------------------------------------------+
+| 0200     | The Stranger                             |
+| 0378     | Venice                                   |
+| 079X     | Second Wind                              |
+| 1351     | Dreamcatcher: A Novel                    |
+| 1382     | Treasure Chests                          |
+| 138X     | Beloved                                  |
+| 2226     | Harry Potter and the Prisoner of Azkaban |
+| 2281     | Van Gogh and Gauguin                     |
+| 2908     | Electric Light                           |
+| 3350     | Group: Six People in Search of a Life    |
+| 3906     | The Soul of a New Machine                |
+| 5790     | Catch-22                                 |
+| 6128     | Jazz                                     |
+| 6328     | Band of Brothers                         |
+| 669X     | A Guide to SQL                           |
+| 7405     | East of Eden                             |
+| 7443     | Harry Potter and the Goblet of Fire      |
+| 7559     | The Fall                                 |
+| 8092     | Godel, Escher, Bach                      |
+| 9611     | Black House                              |
+| 9627     | Song of Solomon                          |
+| 9701     | The Grapes of Wrath                      |
+| 9931     | To Kill a Mockingbird                    |
++----------+------------------------------------------+
+23 rows in set (0.00 sec)
+
+#17
+mysql>SELECT BOOK.BOOK_CODE,BOOK.TITLE,INVENTORY.ON_HAND FROM BOOK,INVENTORY,BRANCH 
+-> WHERE BRANCH.BRANCH_NUM=INVENTORY.BRANCH_NUM AND INVENTORY.BOOK_CODE=BOOK.BOOK_CODE 
+-> AND BRANCH.BRANCH_NUM=2 ORDER BY BOOK.BOOK_CODE;
++----------+------------------------------------------+--------+
+| BookCode | Title                                    | OnHand |
++----------+------------------------------------------+--------+
+| 0180     | A Deepness in the Sky                    |   NULL |
+| 0189     | Magic Terror                             |      2 |
+| 0200     | The Stranger                             |      3 |
+| 0378     | Venice                                   |   NULL |
+| 079X     | Second Wind                              |      1 |
+| 0808     | The Edge                                 |      1 |
+| 1351     | Dreamcatcher: A Novel                    |      4 |
+| 1382     | Treasure Chests                          |      1 |
+| 138X     | Beloved                                  |      3 |
+| 2226     | Harry Potter and the Prisoner of Azkaban |   NULL |
+| 2281     | Van Gogh and Gauguin                     |   NULL |
+| 2766     | Of Mice and Men                          |   NULL |
+| 2908     | Electric Light                           |   NULL |
+| 3350     | Group: Six People in Search of a Life    |   NULL |
+| 3743     | Nine Stories                             |      1 |
+| 3906     | The Soul of a New Machine                |      1 |
+| 5163     | Travels with Charley                     |   NULL |
+| 5790     | Catch-22                                 |   NULL |
+| 6128     | Jazz                                     |      4 |
+| 6328     | Band of Brothers                         |      2 |
+| 669X     | A Guide to SQL                           |   NULL |
+| 6908     | Franny and Zooey                         |      2 |
+| 7405     | East of Eden                             |   NULL |
+| 7443     | Harry Potter and the Goblet of Fire      |   NULL |
+| 7559     | The Fall                                 |      2 |
+| 8092     | Godel, Escher, Bach                      |   NULL |
+| 8720     | When Rabbit Howls                        |   NULL |
+| 9611     | Black House                              |   NULL |
+| 9627     | Song of Solomon                          |   NULL |
+| 9701     | The Grapes of Wrath                      |      1 |
+| 9882     | Slay Ride                                |   NULL |
+| 9883     | The Catcher in the Rye                   |      3 |
+| 9931     | To Kill a Mockingbird                    |   NULL |
++----------+------------------------------------------+--------+
+33 rows in set (0.00 sec)
+
+
